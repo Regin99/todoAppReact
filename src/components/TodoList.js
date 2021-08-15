@@ -4,15 +4,24 @@ import { Input } from "./Input";
 import "../index.css";
 
 export const TodoList = () => {
-  const defaultList = [
-    { id: 1, text: "Buy car", completed: false },
-    { id: 2, text: "fuck u", completed: true },
-    { id: 3, text: "asd", completed: false },
-    { id: 4, text: "Buyher", completed: false },
-    { id: 5, text: "asdasf", completed: false },
-  ];
+  const readList = () => {
+    const todos = localStorage.getItem("todos");
+    if (todos) {
+      return JSON.parse(todos);
+    }
+    return [
+      { id: 1, text: "Buy car", completed: false },
+      { id: 2, text: "fuck u", completed: true },
+      { id: 3, text: "asd", completed: false },
+      { id: 4, text: "Buyher", completed: false },
+      { id: 5, text: "asdasf", completed: false },
+    ];
+  };
+  const [todos, setTodos] = useState(readList());
 
-  const [todos, setTodos] = useState(defaultList);
+  const saveList = () => {
+    localStorage.setItem("todos", JSON.stringify(todos));
+  };
 
   const addTodos = (value) => {
     setTodos([
@@ -36,6 +45,7 @@ export const TodoList = () => {
     );
   };
 
+  saveList();
   return (
     <div className="todoList">
       {todos.map((todo, index) => {
