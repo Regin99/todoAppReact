@@ -1,11 +1,13 @@
-import React, { useState } from "react";
+import React from "react";
 import "./style.css";
+import { useSelector } from "react-redux";
 
 export const TodoItem = (props) => {
-  const [flag, setFlag] = useState(props.flag);
   const styles = ["todoItem"];
 
-  props.flag ? styles.push("completed") : styles.push(" ");
+  const todo = useSelector((state) => state[props.index]);
+
+  todo.flag ? styles.push("completed") : styles.push(" ");
 
   return (
     <div className={styles.join(" ")}>
@@ -13,17 +15,15 @@ export const TodoItem = (props) => {
         <strong>{props.index + 1}</strong>
         <input
           type="checkbox"
-          checked={props.flag}
+          checked={todo.flag}
           onChange={() => {
-            setFlag(!flag);
-            props.onChangeFlag(!flag, props.index);
+            props.onToggleTodo(props.index);
           }}
         />
       </div>
-      <li>{props.todo.text}</li>
+      <li>{todo.text}</li>
       <button
         onClick={(event) => {
-          setFlag(!flag);
           event.preventDefault();
           props.onDeleteTodo(props.index);
         }}
